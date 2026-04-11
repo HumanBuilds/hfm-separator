@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+
+# Sphinx build
+docs/_build/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Copyrighted paper source (Coker, Freeman & Fleming 1998, AIChE/Wiley)
+Modeling multicomponent gas separation using hollow-fiber membrane contactors.pdf
+paper_pages/
+
+# Local agent instructions — not for public repo
+CLAUDE.md
+AGENTS.md
