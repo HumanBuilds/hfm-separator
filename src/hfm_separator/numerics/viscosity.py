@@ -46,6 +46,11 @@ def wilke_mixture_viscosity(
         )
     if np.any(mu <= 0.0) or np.any(m <= 0.0):
         raise ValueError("pure_viscosities and molar_masses must be strictly positive")
+    if np.any(y < 0.0) or y.sum() <= 0.0:
+        # A degenerate composition has no defined mixture viscosity. Fail loudly
+        # rather than silently returning a finite-but-meaningless number that
+        # would then feed the pressure-drop correlation.
+        raise ValueError("mole_fractions must be non-negative with a positive sum")
 
     # φ_ij matrix — shape (R, R), diagonal is 1.
     mu_ratio = mu[:, None] / mu[None, :]
@@ -54,7 +59,6 @@ def wilke_mixture_viscosity(
     denominator = _SQRT_EIGHT * np.sqrt(1.0 + m_ratio)
     phi = numerator / denominator
 
-    # Row-sums Σ_j y_j · φ_ij.
+    # Row-sums Σ_j y_j · φ_ij are strictly positive: φ > 0 and Σ y > 0.
     row_sums = phi @ y
-    safe = np.where(row_sums > 0.0, row_sums, 1.0)
-    return float(np.sum(y * mu / safe))
+    return float(np.sum(y * mu / row_sums))

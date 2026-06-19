@@ -62,6 +62,25 @@ def test_rejects_nonpositive_viscosity() -> None:
         )
 
 
+def test_rejects_degenerate_composition() -> None:
+    """An all-zero composition has no defined mixture viscosity."""
+    with pytest.raises(ValueError, match="non-negative with a positive sum"):
+        wilke_mixture_viscosity(
+            mole_fractions=np.array([0.0, 0.0]),
+            pure_viscosities=np.array([1.789e-5, 2.031e-5]),
+            molar_masses=np.array([28.0134, 31.9988]),
+        )
+
+
+def test_rejects_negative_mole_fraction() -> None:
+    with pytest.raises(ValueError, match="non-negative with a positive sum"):
+        wilke_mixture_viscosity(
+            mole_fractions=np.array([-0.1, 1.1]),
+            pure_viscosities=np.array([1.789e-5, 2.031e-5]),
+            molar_masses=np.array([28.0134, 31.9988]),
+        )
+
+
 def test_rejects_shape_mismatch() -> None:
     with pytest.raises(ValueError):
         wilke_mixture_viscosity(

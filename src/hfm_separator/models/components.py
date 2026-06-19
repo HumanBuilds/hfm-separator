@@ -1,5 +1,7 @@
 """User-facing component specification."""
 
+import math
+
 from pydantic import BaseModel, ConfigDict, field_validator
 
 from hfm_separator.models.permeance import PermeanceFn
@@ -44,15 +46,19 @@ class ComponentSpec(BaseModel):
     @field_validator("molar_mass_kg_per_kmol")
     @classmethod
     def _positive_molar_mass(cls, v: float) -> float:
-        if v <= 0.0:
-            raise ValueError(f"molar_mass_kg_per_kmol must be positive, got {v}")
+        if not math.isfinite(v) or v <= 0.0:
+            raise ValueError(
+                f"molar_mass_kg_per_kmol must be positive and finite, got {v}"
+            )
         return v
 
     @field_validator("pure_viscosity_pa_s")
     @classmethod
     def _positive_viscosity(cls, v: float) -> float:
-        if v <= 0.0:
-            raise ValueError(f"pure_viscosity_pa_s must be positive, got {v}")
+        if not math.isfinite(v) or v <= 0.0:
+            raise ValueError(
+                f"pure_viscosity_pa_s must be positive and finite, got {v}"
+            )
         return v
 
     @field_validator("name")

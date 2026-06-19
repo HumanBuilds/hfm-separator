@@ -78,6 +78,16 @@ class TestComponentSpec:
         with pytest.raises(ValidationError):
             self._make(name="   ")
 
+    @pytest.mark.parametrize("bad", [float("nan"), float("inf")])
+    def test_rejects_nonfinite_molar_mass(self, bad: float) -> None:
+        with pytest.raises(ValidationError):
+            self._make(molar_mass_kg_per_kmol=bad)
+
+    @pytest.mark.parametrize("bad", [float("nan"), float("inf")])
+    def test_rejects_nonfinite_viscosity(self, bad: float) -> None:
+        with pytest.raises(ValidationError):
+            self._make(pure_viscosity_pa_s=bad)
+
     def test_is_frozen(self) -> None:
         spec = self._make()
         with pytest.raises(ValidationError):

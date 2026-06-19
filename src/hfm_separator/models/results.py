@@ -30,9 +30,15 @@ class SimulationResults:
     permeate_flow_kmol_s : float
         Total molar permeate flow rate leaving the module.
     stage_cut : float
-        ``permeate_flow / feed_flow`` — fraction of feed that permeated.
+        ``permeate_flow / feed_flow`` — fraction of the feed leaving in the
+        permeate product stream. With ``purge_fraction > 0`` this product
+        stream also carries the recycled sweep gas, so ``stage_cut`` is the
+        gross permeate-port flow over feed; it still satisfies
+        ``stage_cut + residue_recovery == 1`` because ``residue_recovery`` is
+        reported net of the recycled sweep.
     residue_recovery : float
-        ``residue_flow / feed_flow`` — fraction of feed in the residue.
+        ``residue_flow / feed_flow`` — fraction of the feed in the net residue
+        product (after any purge sweep has been drawn off).
     axial_positions : np.ndarray
         ``z/L`` positions for the axial profiles, shape ``(n_stages,)``.
         ``z/L = 0`` is the residue end and ``z/L = 1`` is the feed end.
@@ -43,7 +49,12 @@ class SimulationResults:
     feed_side_pressure_pa : np.ndarray
         Feed-side pressure per stage, shape ``(n_stages,)``.
     permeate_side_pressure_pa : np.ndarray
-        Permeate-side pressure per stage, shape ``(n_stages,)``.
+        Permeate-side pressure per stage, shape ``(n_stages,)``. For the
+        standalone ``"crossflow"`` pattern with ``feed_side == "shell"`` this
+        is flat at the permeate set-point: the bore-side (permeate) flow
+        profile is unknown during a single forward march, so its pressure
+        drop is not resolved. The iterative ``"countercurrent"`` and
+        ``"cocurrent"`` patterns do resolve it.
     feed_side_flow_kmol_s : np.ndarray
         Feed-side total flow per stage, shape ``(n_stages,)``.
     permeate_side_flow_kmol_s : np.ndarray
