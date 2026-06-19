@@ -1,0 +1,9 @@
+# Normalize line endings: store text as LF in the repo regardless of platform.
+* text=auto eol=lf
+
+# Explicit binary types (never normalized / never diffed as text).
+*.png binary
+*.pdf binary
+
+# Generated lockfile — keep diffs collapsed in reviews.
+uv.lock linguist-generated=true

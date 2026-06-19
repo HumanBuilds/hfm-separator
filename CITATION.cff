@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the software and the underlying model paper."
+title: "hfm-separator: Multicomponent hollow-fiber membrane gas separation simulator"
+abstract: >-
+  A Python implementation of the Coker, Freeman & Fleming (1998) numerical model
+  for multicomponent gas separation in hollow-fiber membrane contactors,
+  supporting cocurrent, countercurrent, and cross-flow contacting patterns with
+  optional permeate purging.
+type: software
+authors:
+  - given-names: Josh
+    family-names: Human
+    email: josh@humanbuilds.dev
+license: MIT
+repository-code: "https://github.com/HumanBuilds/hfm-separator"
+keywords:
+  - membrane separation
+  - gas separation
+  - hollow fiber
+  - chemical engineering
+  - process simulation
+references:
+  - type: article
+    title: "Modeling Multicomponent Gas Separation Using Hollow-Fiber Membrane Contactors"
+    authors:
+      - family-names: Coker
+        given-names: D. T.
+      - family-names: Freeman
+        given-names: B. D.
+      - family-names: Fleming
+        given-names: G. K.
+    journal: "AIChE Journal"
+    year: 1998
+    volume: 44
+    issue: 6
+    start: 1289
+    end: 1302
+    doi: "10.1002/aic.690440607"
