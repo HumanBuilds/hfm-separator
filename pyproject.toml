@@ -4,6 +4,27 @@ version = "0.1.0"
 description = "Multicomponent hollow-fiber membrane gas separation simulator"
 readme = "README.md"
 requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Josh Human", email = "josh@humanbuilds.dev" }]
+keywords = [
+    "membrane-separation",
+    "gas-separation",
+    "hollow-fiber",
+    "chemical-engineering",
+    "process-simulation",
+    "numerical-methods",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
 dependencies = [
     "numpy>=2.0",
     "scipy>=1.13",
@@ -11,6 +32,11 @@ dependencies = [
     "pandas>=2.2",
     "matplotlib>=3.9",
 ]
+
+[project.urls]
+Homepage = "https://github.com/HumanBuilds/hfm-separator"
+Repository = "https://github.com/HumanBuilds/hfm-separator"
+Issues = "https://github.com/HumanBuilds/hfm-separator/issues"
 
 [project.optional-dependencies]
 docs = [
@@ -25,6 +51,7 @@ dev = [
     "pytest-cov>=5.0",
     "ruff>=0.6",
     "ty>=0.0.1",
+    "pre-commit>=4.0",
 ]
 
 [build-system]

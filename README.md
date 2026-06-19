@@ -1,5 +1,11 @@
 # hfm-separator
 
+[![CI](https://github.com/HumanBuilds/hfm-separator/actions/workflows/ci.yml/badge.svg)](https://github.com/HumanBuilds/hfm-separator/actions/workflows/ci.yml)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
+[![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen.svg)](#commands)
+[![Ruff](https://img.shields.io/badge/lint-ruff-261230.svg)](https://github.com/astral-sh/ruff)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+
 Multicomponent gas separation simulator for hollow-fiber membrane contactors.
 
 Implements the numerical model from:
@@ -80,7 +86,18 @@ Full mathematical model, design decisions, and testing strategy are in `docs/`:
 - `docs/design.md` — design decisions with rationale and code sketches
 - `docs/testing.md` — test strategy and numerical targets from paper figures
 
-For agents starting implementation, read `AGENTS.md` first.
+---
+
+## Development
+
+```bash
+uv sync --all-extras       # install runtime + dev + docs dependencies
+uv run pre-commit install  # enable lint/format/type hooks on commit
+uv run pytest              # run the full suite (coverage gate: 90%)
+```
+
+CI (lint, format, type-check, tests on Python 3.12 & 3.13, and a packaging
+build) runs on every push and pull request via GitHub Actions.
 
 ---
 

@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Fail fast and keep output deterministic in CI.
+  FORCE_COLOR: "1"
+  UV_FROZEN: "1"
+
+jobs:
+  quality:
+    name: Lint, type-check & test (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: uv sync --all-extras --python ${{ matrix.python-version }}
+
+      - name: Lint (ruff check)
+        run: uv run ruff check src/ tests/ examples/
+
+      - name: Format check (ruff format)
+        run: uv run ruff format --check src/ tests/ examples/
+
+      - name: Type check (ty)
+        run: uv run ty check src/
+
+      - name: Test (pytest + coverage)
+        run: uv run pytest --cov-report=xml
+
+      - name: Upload coverage artifact
+        if: matrix.python-version == '3.13'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+          if-no-files-found: error
+
+  build:
+    name: Build distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Build sdist and wheel
+        run: uv build
+
+      - name: Verify the built package imports and ships type info
+        run: |
+          set -euo pipefail
+          uv run --isolated --no-project --with dist/*.whl python - <<'PY'
+          import importlib.resources as r
+          import hfm_separator
+          # PEP 561 marker must be packaged so downstream users get types.
+          assert (r.files("hfm_separator") / "py.typed").is_file(), "py.typed missing from wheel"
+          print("OK", hfm_separator.__version__)
+          PY
+
+      - name: Upload distribution artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/*
+          if-no-files-found: error
