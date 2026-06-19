@@ -29,9 +29,9 @@ Test the Thomas algorithm against systems with known exact solutions.
 **Test 2 — 5×5 system (known solution)**
 Construct from a known solution vector, verify round-trip.
 
-**Test 3 — near-singular system**
-Verify that a near-zero pivot raises `ValueError` rather than returning
-silently wrong results.
+**Test 3 — structurally singular system**
+Verify that a zero pivot (including one that only emerges after elimination)
+raises `ValueError` rather than returning silently wrong results.
 
 **Test 4 — large random system**
 Generate a random diagonally dominant tridiagonal system, solve with Thomas,

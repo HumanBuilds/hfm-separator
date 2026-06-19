@@ -25,8 +25,10 @@ def thomas_solve(
         0        lower[2] diag[2] ...
         ...
 
-    Runs in ``O(N)`` time and space. Raises ``ValueError`` on a zero or
-    near-zero pivot (singular or near-singular system).
+    Runs in ``O(N)`` time and space. Raises ``ValueError`` on an exact or
+    numerically-zero pivot (a structurally singular system). This is a
+    structural guard, not a conditioning estimate: a well-posed but
+    ill-conditioned system is not rejected here.
 
     Parameters
     ----------

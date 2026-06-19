@@ -69,6 +69,12 @@ def test_default_floor_is_100() -> None:
     assert n == 100
 
 
+@pytest.mark.parametrize("bad_delta", [0.0, -0.005])
+def test_nonpositive_delta_x_max_raises(bad_delta: float) -> None:
+    with pytest.raises(ValueError, match="delta_x_max must be positive"):
+        stages_per_component(**_air_args(), delta_x_max=bad_delta)  # type: ignore[arg-type]
+
+
 @pytest.mark.parametrize("delta", [0.002, 0.005, 0.01])
 def test_formula_scales_linearly_in_geometry(delta: float) -> None:
     args = _air_args()

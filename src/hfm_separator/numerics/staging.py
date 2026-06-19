@@ -28,6 +28,8 @@ def stages_per_component(
     delta_x_max: float = _DEFAULT_DELTA_X_MAX,
 ) -> np.ndarray:
     """Return the per-component stage count from Eq. 22 as a float array."""
+    if delta_x_max <= 0.0:
+        raise ValueError(f"delta_x_max must be positive, got {delta_x_max}")
     x_f = np.asarray(feed_mole_fractions, dtype=float)
     q = np.asarray(permeances_si, dtype=float)
     geom = 2.0 * math.pi * fiber_outer_radius_m * active_length_m * float(n_fibers)
